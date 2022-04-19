@@ -1,0 +1,96 @@
+{{ if .Values.controller.enabled }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-controller
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: dealbot-controller
+    release: {{ .Release.Name }}
+  annotations:
+{{- with .Values.controller.services.api.annotations }}
+{{ toYaml . | indent 4 }}
+{{- end }}
+spec:
+  type: ClusterIP
+  selector:
+    app: dealbot-controller
+    release: {{ .Release.Name }}
+  ports:
+    - protocol: TCP
+      port: 8764
+      targetPort: 8764
+      name: dealbot
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-controller-graphql
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: dealbot-controller
+    release: {{ .Release.Name }}
+  annotations:
+{{- with .Values.controller.services.graphql.annotations }}
+{{ toYaml . | indent 4 }}
+{{- end }}
+spec:
+  type: LoadBalancer
+  selector:
+    app: dealbot-controller
+    release: {{ .Release.Name }}
+  ports:
+    - protocol: TCP
+      port: 8763
+      targetPort: 8763
+      name: dealbotgraphql
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-controller-libp2p
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: dealbot-controller
+    release: {{ .Release.Name }}
+  annotations:
+{{- with .Values.controller.services.libp2p.annotations }}
+{{ toYaml . | indent 4 }}
+{{- end }}
+spec:
+  type: LoadBalancer
+  selector:
+    app: dealbot-controller
+    release: {{ .Release.Name }}
+  ports:
+    - protocol: TCP
+      port: 8762
+      targetPort: 8762
+      name: dealbotlibp2p
+{{ end }}
+
+
+{{ if .Values.daemon.enabled }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-daemon
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: dealbot-controller
+    release: {{ .Release.Name }}
+spec:
+  type: ClusterIP
+  selector:
+    app: dealbot-controller
+    release: {{ .Release.Name }}
+  ports:
+    - protocol: TCP
+      port: 8764
+      targetPort: 8764
+      name: dealbot
+{{ end }}

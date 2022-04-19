@@ -1,0 +1,82 @@
+apiVersion: v1
+entries:
+  dealbot:
+  - apiVersion: v2
+    appVersion: 0.0.2
+    created: "2022-04-19T14:34:09.052490943+05:30"
+    description: A tool to test and analyze storage and retrieval deal capability
+      on the Filecoin network.
+    digest: ade8f7f48f546fa169e41437ce0288aec2eff5a2d3d32dfe4bbedc376c6793fa
+    name: dealbot
+    type: application
+    urls:
+    - charts/dealbot-0.0.14.tgz
+    version: 0.0.14
+  efs-access:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2022-04-19T14:33:42.171520899+05:30"
+    description: Creates the required resources to gain access to the efs volume
+    digest: fc9e3a3683bfba4b64a9f8fff39582b53bb511ab31500a31ffc07a6fbe2593ea
+    name: efs-access
+    type: application
+    urls:
+    - charts/efs-access-0.1.0.tgz
+    version: 0.1.0
+  lily:
+  - apiVersion: v2
+    appVersion: 0.8.6
+    created: "2022-04-19T14:34:31.57119404+05:30"
+    description: A Helm chart for Kubernetes to run Sentinel Lily
+    digest: d2fbe7bdac32b91f35a38393325e6af9edc523a12cbd73a4f49811b970650dba
+    name: lily
+    type: application
+    urls:
+    - charts/lily-0.0.7-alpha.tgz
+    version: 0.0.7-alpha
+  lotus-bundle:
+  - apiVersion: v2
+    appVersion: 0.0.1
+    created: "2022-04-19T14:34:37.026786309+05:30"
+    description: bundle your application with lotus
+    digest: 0867dad5d7fe6e803100c87c698b44d75de9b7b8cb1c5d9a36447ca14603cd8b
+    name: lotus-bundle
+    type: application
+    urls:
+    - charts/lotus-bundle-0.0.13.tgz
+    version: 0.0.13
+  lotus-chain-export:
+  - apiVersion: v2
+    appVersion: 0.8.0
+    created: "2022-04-19T14:34:56.707081482+05:30"
+    description: A CronJob tool to export lotus chains
+    digest: 63a47d1a70402949a6ff5b71015ed21bfb7cb4c0085e15b7f532d01698f665a7
+    name: lotus-chain-export
+    type: application
+    urls:
+    - charts/lotus-chain-export-0.1.1.tgz
+    version: 0.1.1
+  lotus-consensus-check:
+  - apiVersion: v2
+    appVersion: 0.7.0
+    created: "2022-04-19T14:35:05.990953747+05:30"
+    description: Provision a consensus monitoring cronjob
+    digest: a83364a7dd1f78f0d151dfff51f1887534123c4c114566072f79b9fda327c3c2
+    name: lotus-consensus-check
+    type: application
+    urls:
+    - charts/lotus-consensus-check-0.1.1.tgz
+    version: 0.1.1
+  visor:
+  - apiVersion: v2
+    appVersion: 0.7.5
+    created: "2022-04-19T14:35:29.393475849+05:30"
+    description: A Helm chart for Kubernetes to run visor
+    digest: 6e7be407a69c48b786a96495dbf6b51f058856b58c05aea57e5fc73a0d09bfea
+    name: visor
+    type: application
+    urls:
+    - charts/visor-5.0.1.tgz
+    version: 5.0.1
+generated: "2022-04-19T14:35:29+05:30"
+serverInfo: {}

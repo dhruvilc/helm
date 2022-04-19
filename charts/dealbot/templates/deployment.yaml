@@ -1,0 +1,245 @@
+{{ if .Values.controller.enabled }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-dealbot-controller
+  labels:
+    app: dealbot-controller
+{{- if .Values.labels }}
+{{ toYaml .Values.labels | indent 4 }}
+{{- end }}
+
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: dealbot-controller
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: dealbot-controller
+        chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+        heritage: {{ .Release.Service }}
+        release: {{ .Release.Name }}
+    spec:
+      volumes:
+        - name: dealbot-key-volume
+          secret:
+            secretName: {{ .Values.controller.secrets.keySecret }}
+            items:
+              - key: dealbot.key
+                path: dealbot.key
+        - name: dealbot-selfserve-config-volume
+          secret:
+            secretName: {{ .Values.controller.secrets.selfServeConfigSecret }}
+            items:
+              - key: kubeconfig
+                path: kubeconfig
+        {{- if .Values.filebeat.enabled }}
+        - name: filebeat-config-secret-volume
+          secret:
+            secretName: {{ .Values.filebeat.externalSecret }}
+        - name: filebeat-volume
+          emptyDir: {}
+        # filebeat secrets and configmaps
+        {{- range $sec := .Values.filebeat.secrets }}
+        - name: {{ $sec.name }}-filebeat-volume
+          secret:
+            {{- if $sec.external }}
+            secretName: {{ $sec.name }}
+            {{- else }}
+            secretName: {{ $.Release.Name }}-{{ $sec.name }}
+            {{ end }}
+        {{- end }}
+        {{- range $cm := .Values.filebeat.configMaps }}
+        - name: {{ $cm.name }}-filebeat-volume
+          configMap:
+            {{- if $cm.external }}
+            name:  {{ $cm.name }}
+            {{- else }}
+            name: {{ $.Release.Name }}-{{ $cm.name }}
+            {{- end }}
+        {{- end }}
+        {{- end }}
+      containers:
+        - name: dealbot-controller
+          image: "{{ .Values.image.repo }}:{{ .Values.image.tag }}"
+          imagePullPolicy: "{{ .Values.image.pullPolicy }}"
+          ports:
+            - containerPort: 8764
+              name: dealbot
+            - containerPort: 8763
+              name: dealbotgraphql
+            - containerPort: 8762
+              name: dealbotlibp2p
+          args: ["controller"]
+          env:
+            - name: KUBECONFIG
+              value: /kubeconfig
+            - name: DEALBOT_LISTEN
+              value: "0.0.0.0:8764"
+            - name: DEALBOT_GRAPHQL_LISTEN
+              value: "0.0.0.0:8763"
+            - name: DEALBOT_METRICS
+              value: prometheus
+            - name: DEALBOT_IDENTITY_KEYPAIR
+              value: /dealbot.key
+            - name: DEALBOT_DAEMON_DRIVER
+              value: "kubernetes"
+            - name: DEALBOT_LIBP2P_ADDRS
+              value: "/ip4/0.0.0.0/tcp/8762"
+            {{- if .Values.postgres.enabled }}
+            - name: DEALBOT_PERSISTENCE_DRIVER
+              value: postgres
+            - name: PGHOST
+              value: {{ .Values.postgres.teamid }}-{{ .Release.Name }}-controllerdb
+            - name: PGPORT
+              value: "5432"
+            - name: PGUSER
+              value: {{ .Values.postgres.user }}
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.postgres.user }}.{{.Values.postgres.teamid }}-{{ .Release.Name }}-controllerdb.credentials.postgresql.acid.zalan.do
+                  key: password
+            - name: PGDATABASE
+              value: {{ .Values.postgres.database }}
+            {{- end }}
+            {{- if .Values.filebeat.enabled }}
+            - name: DEALBOT_DATAPOINT_LOG
+              value: {{ .Values.filebeat.path }}/controller.log
+            {{- end }}
+            {{- if .Values.controller.secrets.awsKeysSecret }}
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.controller.secrets.awsKeysSecret }}
+                  key: aws-access-key-id
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.controller.secrets.awsKeysSecret }}
+                  key: aws-secret-access-key
+            - name: AWS_REGION
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.controller.secrets.awsKeysSecret }}
+                  key: aws-region
+            {{- end }}
+{{- with .Values.controller.env }}
+{{ toYaml . | indent 12}}
+{{- end }}
+          resources:
+{{ toYaml .Values.controller.resources | indent 12 }}
+          volumeMounts:
+            - name: dealbot-key-volume
+              mountPath: /dealbot.key
+              subPath: dealbot.key
+              readOnly: true
+            - name: dealbot-selfserve-config-volume
+              mountPath: /kubeconfig
+              subPath: kubeconfig
+            {{- if .Values.filebeat.enabled }}
+            - name: filebeat-volume
+              mountPath: {{ .Values.filebeat.path }}
+            {{- end }}
+        {{- if .Values.filebeat.enabled }}
+        - name: filebeat
+          image: {{ .Values.filebeat.image }}
+          args:
+            - "-e"
+            - "-c"
+            - "/etc/filebeat/filebeat.yaml"
+          volumeMounts:
+            - name: filebeat-config-secret-volume
+              mountPath: /etc/filebeat
+            - name: filebeat-volume
+              mountPath: {{ .Values.filebeat.path }}
+            {{- range $sec := .Values.filebeat.secrets }}
+            - name: {{ $sec.name }}-filebeat-volume
+              mountPath: {{ $sec.mount }}
+            {{- end }}
+            {{- range $cm := .Values.filebeat.configMaps }}
+            - name: {{ $cm.name }}-filebeat-volume
+              mountPath: {{ $cm.mount }}
+            {{- end }}
+        {{- end }}
+{{ end }}
+
+{{ if .Values.daemon.enabled }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-dealbot-daemon
+  labels:
+    app: dealbot-daemon
+{{- if .Values.labels }}
+{{ toYaml .Values.labels | indent 4 }}
+{{- end }}
+
+spec:
+  replicas: {{ .Values.daemon.replicas }}
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: dealbot-daemon
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: dealbot-daemon
+        chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+        heritage: {{ .Release.Service }}
+        release: {{ .Release.Name }}
+    spec:
+      {{- if .Values.daemon.persistence.enabled }}
+      volumes:
+        - name: deals-volume
+          persistentVolumeClaim:
+            claimName: {{ .Values.daemon.persistence.claimName }}
+        {{- end }}
+      containers:
+        - name: dealbot-daemon
+          image: "{{ .Values.image.repo }}:{{ .Values.image.tag }}"
+          imagePullPolicy: "{{ .Values.image.pullPolicy }}"
+          ports:
+            - containerPort: 8764
+              name: dealbot
+          args: ["daemon"]
+          env:
+            - name: LOTUS_API_MULTIADDR
+              value: {{ .Values.daemon.lotusAPI.lotusAPIMultiaddr }}
+            - name: LOTUS_API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.daemon.lotusAPI.lotusAPITokenSecret }}
+                  key: jwt-all-privs-token
+            - name: FULLNODE_API_INFO
+              value: "$(LOTUS_API_TOKEN):$(LOTUS_API_MULTIADDR)"
+            - name: DEALBOT_DATA_DIRECTORY
+              value: {{ .Values.daemon.persistence.data | default "/tmp" }}
+            - name: DEALBOT_NODE_DATA_DIRECTORY
+              value: {{ .Values.daemon.persistence.nodedata | default "/tmp" }}
+            - name: DEALBOT_WALLET_ADDRESS
+              value: {{ .Values.daemon.lotusAPI.wallet }}
+            - name: DEALBOT_LISTEN
+              value: "0.0.0.0:8764"
+            - name: DEALBOT_CONTROLLER_ENDPOINT
+              value: http://{{ .Release.Name }}-controller:8764
+{{- with .Values.daemon.env }}
+{{ toYaml . | indent 12}}
+{{- end }}
+            {{- if .Values.daemon.persistence.enabled }}
+          volumeMounts:
+          - name: deals-volume
+            mountPath: {{ .Values.daemon.persistence.mountPath }}
+          {{- end }}
+          resources:
+{{ toYaml .Values.daemon.resources | indent 12 }}
+{{ end }}

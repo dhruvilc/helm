@@ -1,0 +1,6 @@
+apiVersion: v2
+name: lotus-mpool-stats
+description: Lotus Mpool stats
+type: application
+version: 0.1.1
+appVersion: 1.10.0
