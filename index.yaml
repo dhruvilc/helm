@@ -9,7 +9,7 @@ entries:
     name: dealbot
     type: application
     urls:
-    - https://neilswebelight.github.io/helm/dealbot-0.0.14.tgz
+    - https://dhruvilc.github.io/helm/dealbot-0.0.14.tgz
     version: 0.0.14
   efs-access:
   - apiVersion: v2
@@ -20,7 +20,7 @@ entries:
     name: efs-access
     type: application
     urls:
-    - https://neilswebelight.github.io/helm/efs-access-0.1.0.tgz
+    - https://dhruvilc.github.io/helm/efs-access-0.1.0.tgz
     version: 0.1.0
   lily:
   - apiVersion: v2
@@ -31,7 +31,7 @@ entries:
     name: lily
     type: application
     urls:
-    - https://neilswebelight.github.io/helm/lily-0.0.7-alpha.tgz
+    - https://dhruvilc.github.io/helm/lily-0.0.7-alpha.tgz
     version: 0.0.7-alpha
   lotus-bundle:
   - apiVersion: v2
@@ -42,7 +42,7 @@ entries:
     name: lotus-bundle
     type: application
     urls:
-    - https://neilswebelight.github.io/helm/lotus-bundle-0.0.13.tgz
+    - https://dhruvilc.github.io/helm/lotus-bundle-0.0.13.tgz
     version: 0.0.13
   lotus-chain-export:
   - apiVersion: v2
@@ -53,7 +53,7 @@ entries:
     name: lotus-chain-export
     type: application
     urls:
-    - https://neilswebelight.github.io/helm/lotus-chain-export-0.1.1.tgz
+    - https://dhruvilc.github.io/helm/lotus-chain-export-0.1.1.tgz
     version: 0.1.1
   lotus-consensus-check:
   - apiVersion: v2
@@ -64,7 +64,7 @@ entries:
     name: lotus-consensus-check
     type: application
     urls:
-    - https://neilswebelight.github.io/helm/lotus-consensus-check-0.1.1.tgz
+    - https://dhruvilc.github.io/helm/lotus-consensus-check-0.1.1.tgz
     version: 0.1.1
   lotus-fullnode:
   - apiVersion: v2
@@ -75,7 +75,7 @@ entries:
     name: lotus-fullnode
     type: application
     urls:
-    - https://neilswebelight.github.io/helm/lotus-fullnode-0.3.4.tgz
+    - https://dhruvilc.github.io/helm/lotus-fullnode-0.3.4.tgz
     version: 0.3.4
   lotus-gateway:
   - apiVersion: v2
@@ -86,7 +86,7 @@ entries:
     name: lotus-gateway
     type: application
     urls:
-    - https://neilswebelight.github.io/helm/lotus-gateway-0.1.5.tgz
+    - https://dhruvilc.github.io/helm/lotus-gateway-0.1.5.tgz
     version: 0.1.5
   lotus-mpool-stats:
   - apiVersion: v2
@@ -97,7 +97,7 @@ entries:
     name: lotus-mpool-stats
     type: application
     urls:
-    - https://neilswebelight.github.io/helm/lotus-mpool-stats-0.1.1.tgz
+    - https://dhruvilc.github.io/helm/lotus-mpool-stats-0.1.1.tgz
     version: 0.1.1
   lotus-secrets-creator:
   - apiVersion: v2
@@ -108,7 +108,7 @@ entries:
     name: lotus-secrets-creator
     type: application
     urls:
-    - https://neilswebelight.github.io/helm/lotus-secrets-creator-0.1.0.tgz
+    - https://dhruvilc.github.io/helm/lotus-secrets-creator-0.1.0.tgz
     version: 0.1.0
   lotus-stats:
   - apiVersion: v2
@@ -119,7 +119,7 @@ entries:
     name: lotus-stats
     type: application
     urls:
-    - https://neilswebelight.github.io/helm/lotus-stats-0.1.2.tgz
+    - https://dhruvilc.github.io/helm/lotus-stats-0.1.2.tgz
     version: 0.1.2
   sentinel-locations:
   - apiVersion: v2
@@ -130,7 +130,7 @@ entries:
     name: sentinel-locations
     type: application
     urls:
-    - https://neilswebelight.github.io/helm/sentinel-locations-0.1.0.tgz
+    - https://dhruvilc.github.io/helm/sentinel-locations-0.1.0.tgz
     version: 0.1.0
   sentinel-tick:
   - apiVersion: v2
@@ -141,7 +141,7 @@ entries:
     name: sentinel-tick
     type: application
     urls:
-    - https://neilswebelight.github.io/helm/sentinel-tick-0.3.0.tgz
+    - https://dhruvilc.github.io/helm/sentinel-tick-0.3.0.tgz
     version: 0.3.0
   tweety:
   - apiVersion: v2
@@ -152,7 +152,7 @@ entries:
     name: tweety
     type: application
     urls:
-    - https://neilswebelight.github.io/helm/tweety-0.0.1.tgz
+    - https://dhruvilc.github.io/helm/tweety-0.0.1.tgz
     version: 0.0.1
   visor:
   - apiVersion: v2
@@ -163,7 +163,7 @@ entries:
     name: visor
     type: application
     urls:
-    - https://neilswebelight.github.io/helm/visor-5.0.1.tgz
+    - https://dhruvilc.github.io/helm/visor-5.0.1.tgz
     version: 5.0.1
   volume-snapshotter:
   - apiVersion: v2
@@ -174,6 +174,6 @@ entries:
     name: volume-snapshotter
     type: application
     urls:
-    - https://neilswebelight.github.io/helm/volume-snapshotter-0.1.0.tgz
+    - https://dhruvilc.github.io/helm/volume-snapshotter-0.1.0.tgz
     version: 0.1.0
 generated: "2022-03-30T11:45:19.243865421-06:00"
