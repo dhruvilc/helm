@@ -9,6 +9,6 @@ entries:
     name: django
     type: application
     urls:
-    - https://shahneil76.github.io/simple-django-app/django/django/django-0.1.0.tgz
+    - https://neilswebelight.github.io/helm/django-0.1.0.tgz
     version: 0.1.0
 generated: "2023-03-20T10:41:59.312390542Z"
